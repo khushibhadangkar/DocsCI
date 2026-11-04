@@ -6,15 +6,18 @@ last_reviewed: '2026-11-04'
 owner: docs-team
 ---
 
-# Configure Azure Blob Storage Target
+# Configure an Azure repository target
 
 Use Azure Blob Storage for resilient cloud offsite archiving.
 
-### Network Settings
+## Network configuration
 
-Direct network routing can be configured through Azure ExpressRoute connections.
+Configure direct network routing through Azure ExpressRoute connections.
 
-To configure an Azure storage pool:
-1. Provide the Azure storage account name and SAS token.
-2. The user can test connection reachability by clicking Test.
+## Configuration steps
+
+Follow these steps to configure an Azure repository:
+
+1. Enter the Azure storage account name and SAS token.
+2. Test connection reachability by clicking Test.
 3. Save the repository configuration.

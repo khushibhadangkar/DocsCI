@@ -6,15 +6,17 @@ last_reviewed: '2026-11-04'
 owner: docs-team
 ---
 
-# Role-Based Access Control Overview
+# Role-based access control overview
 
 Granular permissions prevent unauthorized backup deletion or encryption key export.
 
 ## Role definitions
 
 Three built-in roles govern platform capabilities: Backup Admin, Operator, and Auditor.
-An auth token is required for every programmatic API invocation.
-Permissions are evaluated by the authorization layer before executing sensitive storage actions.
+Every programmatic API invocation requires a valid access token.
+The authorization layer evaluates permissions before executing sensitive storage actions.
+
+Follow these steps:
 
 1. Select Users and Roles from the administration console.
 2. Assign appropriate privilege tiers to the team member.

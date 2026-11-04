@@ -6,17 +6,18 @@ last_reviewed: '2026-11-04'
 owner: docs-team
 ---
 
-# How to Schedule a Backup Routine
+# How to schedule a backup job
 
 Configure automated jobs to run on recurring schedules.
 
-### Advanced Schedule Settings
+## Schedule configuration
 
-It is easy to set up recurring cron schedules.
+Set up recurring cron schedules for automated protection.
 
-To create a new backup task:
-1. Navigating to the Backup Jobs page is recommended.
+To create a new backup job:
+
+1. Navigate to the Backup Jobs page.
 2. Click Create New.
-3. Configure your backup task frequency.
+3. Configure your backup job frequency.
 
-A snapshot was created by the secondary storage engine during initial sync.
+The secondary storage engine creates an initial snapshot during baseline synchronization.

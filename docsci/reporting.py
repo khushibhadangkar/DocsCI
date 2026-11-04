@@ -98,6 +98,8 @@ def compare_reports(
     previous: dict[str, Any],
 ) -> dict[str, Any]:
     """Calculate before/after quality metrics and percentage improvements."""
+    if "report" in previous and isinstance(previous["report"], dict):
+        previous = previous["report"]
     prev_summary = previous.get("summary", {})
     curr_summary = current.get("summary", {})
 

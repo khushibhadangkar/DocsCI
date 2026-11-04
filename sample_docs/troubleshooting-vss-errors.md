@@ -6,16 +6,17 @@ last_reviewed: '2026-11-04'
 owner: docs-team
 ---
 
-# Troubleshooting Windows VSS Snapshot Errors
+# Troubleshooting Windows VSS snapshot errors
 
 Microsoft Volume Shadow Copy Service creates crash-consistent disk states.
 
 ## Resolving VSS writer timeouts
 
-When VSS writers enter an unstable state, image copies are rejected by the operating system.
+When VSS writers enter an unstable state, the operating system rejects new snapshot requests.
 Restart the Volume Shadow Copy service to reset unresponsive system writers.
 
 Follow this procedure:
+
 1. Open PowerShell with Administrator privileges.
 2. Run `vssadmin list writers` to identify failed writer components.
 3. Restart the Cryptographic and VSS system services.

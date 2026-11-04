@@ -12,8 +12,12 @@ Welcome to CloudVault backup and disaster recovery.
 
 ## Overview
 
-CloudVault protects enterprise database workloads. Simply install the agent to start protecting files.
+CloudVault protects enterprise database workloads. Install the agent to start protecting files.
 
-1. Selecting the primary storage target is necessary.
-2. The user should configure credentials.
+## Initial setup
+
+Follow these steps to configure your environment:
+
+1. Select the primary storage target.
+2. Enter your authentication credentials.
 3. Save the initial configuration.

@@ -58,7 +58,37 @@ def lint(
     ),
 ) -> None:
     """Lint Markdown documentation files against style, terminology, and metadata rules."""
-    typer.echo(f"Linting {path} (format: {format}, strict: {strict})")
+    from docsci.config import load_config
+    from docsci.linter import lint_path
+    from docsci.models import Severity
+    from docsci.utils.terminal import (
+        format_github_annotations,
+        format_json_report,
+        format_table_report,
+    )
+
+    if not path.exists():
+        typer.secho(f"Error: Path '{path}' does not exist.", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=2)
+
+    cfg = load_config(config_path=config, terminology_path=terminology)
+    violations, scanned_count = lint_path(path, cfg)
+
+    fmt = format.lower().strip()
+    if fmt == "json":
+        output = format_json_report(violations, scanned_count)
+    elif fmt == "github":
+        output = format_github_annotations(violations, scanned_count)
+    else:
+        output = format_table_report(violations, scanned_count, base_dir=path if path.is_dir() else path.parent)
+
+    typer.echo(output)
+
+    has_errors = any(v.severity == Severity.ERROR for v in violations)
+    has_warnings = any(v.severity == Severity.WARNING for v in violations)
+
+    if has_errors or (strict and has_warnings):
+        raise typer.Exit(code=1)
 
 
 @app.command()

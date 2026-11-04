@@ -103,7 +103,40 @@ def links(
     ),
 ) -> None:
     """Check internal anchors and external URLs for broken or slow links."""
-    typer.echo(f"Checking links in {path} (format: {format}, strict: {strict})")
+    from docsci.config import load_config
+    from docsci.link_checker import (
+        LinkChecker,
+        format_link_github_annotations,
+        format_link_json_report,
+        format_link_table_report,
+    )
+    from docsci.models import LinkStatus
+
+    if not path.exists():
+        typer.secho(f"Error: Path '{path}' does not exist.", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=2)
+
+    cfg = load_config(config_path=config)
+    checker = LinkChecker(config=cfg.links)
+    results, scanned_files_count = checker.check_path(path)
+
+    fmt = format.lower().strip()
+    if fmt == "json":
+        output = format_link_json_report(results, scanned_files_count)
+    elif fmt == "github":
+        output = format_link_github_annotations(results, scanned_files_count)
+    else:
+        output = format_link_table_report(
+            results, scanned_files_count, base_dir=path if path.is_dir() else path.parent
+        )
+
+    typer.echo(output)
+
+    has_broken = any(r.status == LinkStatus.BROKEN for r in results)
+    has_warning_links = any(r.status in (LinkStatus.SLOW, LinkStatus.REDIRECTED) for r in results)
+
+    if has_broken or (strict and has_warning_links):
+        raise typer.Exit(code=1)
 
 
 @app.command(name="release-notes")

@@ -161,19 +161,68 @@ def release_notes(
 
     cfg = load_config(config_path=config)
     commits = extract_commits(repo_path=repo_path, from_tag=from_tag, to_tag=to_tag or "HEAD")
-
     version_label = to_tag or "HEAD"
-    markdown_content = generate_release_notes_markdown(
-        commits=commits,
-        target_version=version_label,
-        config=cfg.release_notes,
-    )
 
-    if output:
-        output.write_text(markdown_content, encoding="utf-8")
-        typer.secho(f"✔ Release notes written to {output}", fg=typer.colors.GREEN)
+    if ai_summary:
+        from docsci.ai.client import get_llm_client, load_prompt_template
+        from docsci.ai.verifier import generate_draft_markdown, split_into_claims, verify_claims
+
+        client = get_llm_client()
+        prompt_tmpl, prompt_version = load_prompt_template(cfg.release_notes.prompt_path)
+
+        typer.secho(f"🤖 Generating AI release summary using prompt '{prompt_version}'...", fg=typer.colors.CYAN)
+        summary_text = client.generate_summary(commits, prompt_tmpl)
+
+        typer.secho("🔍 Running claim verification audit against commit evidence...", fg=typer.colors.CYAN)
+        claims = split_into_claims(summary_text)
+        verifications = verify_claims(claims, commits)
+
+        draft_content = generate_draft_markdown(
+            summary_text=summary_text,
+            verifications=verifications,
+            commits=commits,
+            prompt_version=prompt_version,
+            version_label=version_label,
+        )
+
+        out_path = output or Path(cfg.release_notes.output_draft)
+        out_path.write_text(draft_content, encoding="utf-8")
+        typer.secho(f"✔ AI-assisted draft written to {out_path}", fg=typer.colors.GREEN)
+
+        # Print audit summary
+        unsupported = [v for v in verifications if v.status == "UNSUPPORTED"]
+        typer.echo("")
+        typer.secho(f"Claim Verification Results: {len(verifications) - len(unsupported)}/{len(verifications)} claims supported.", bold=True)
+        for v in verifications:
+            if v.status == "SUPPORTED":
+                typer.echo(f"  \033[32m[SUPPORTED  ]\033[0m Claim {v.claim_id}: {v.claim_text[:60]}... (Evidence: {', '.join(v.evidence_hashes)})")
+            else:
+                typer.echo(f"  \033[31m[UNSUPPORTED]\033[0m Claim {v.claim_id}: {v.claim_text[:60]}... (No commit evidence)")
+
+        if unsupported:
+            typer.echo("")
+            typer.secho(
+                f"❌ Human Accuracy Gate: Found {len(unsupported)} unverified/hallucinated claim(s). "
+                "Review the draft or pass --allow-unsupported to proceed.",
+                fg=typer.colors.RED,
+                bold=True,
+            )
+            if not allow_unsupported:
+                raise typer.Exit(code=1)
+            else:
+                typer.secho("⚠️ Proceeding despite unsupported claims due to --allow-unsupported flag.", fg=typer.colors.YELLOW)
     else:
-        typer.echo(markdown_content)
+        markdown_content = generate_release_notes_markdown(
+            commits=commits,
+            target_version=version_label,
+            config=cfg.release_notes,
+        )
+
+        if output:
+            output.write_text(markdown_content, encoding="utf-8")
+            typer.secho(f"✔ Release notes written to {output}", fg=typer.colors.GREEN)
+        else:
+            typer.echo(markdown_content)
 
 
 @app.command()

@@ -1,0 +1,80 @@
+{
+  "report": {
+    "timestamp": "2026-11-04T09:30:13.572619",
+    "target_path": "sample_docs",
+    "scanned_files": 14,
+    "summary": {
+      "total_violations": 71,
+      "errors": 15,
+      "warnings": 56,
+      "info": 0,
+      "broken_links": 3,
+      "stale_pages": 1,
+      "total_links_checked": 3
+    },
+    "violations_by_rule": {
+      "passive-voice": 21,
+      "terminology-preferred": 13,
+      "banned-phrases": 8,
+      "sentence-case-heading": 15,
+      "stale-content": 1,
+      "imperative-steps": 11,
+      "heading-hierarchy": 2
+    },
+    "top_5_violated_rules": [
+      {
+        "rule_id": "passive-voice",
+        "count": 21,
+        "severity": "warning"
+      },
+      {
+        "rule_id": "sentence-case-heading",
+        "count": 15,
+        "severity": "warning"
+      },
+      {
+        "rule_id": "terminology-preferred",
+        "count": 13,
+        "severity": "error"
+      },
+      {
+        "rule_id": "imperative-steps",
+        "count": 11,
+        "severity": "warning"
+      },
+      {
+        "rule_id": "banned-phrases",
+        "count": 8,
+        "severity": "warning"
+      }
+    ],
+    "stale_pages": [
+      {
+        "file": "sample_docs/concept-retention-policies.md",
+        "line": 1,
+        "message": "Document last reviewed 2499 days ago (exceeds 180 day threshold)."
+      }
+    ],
+    "broken_links": [
+      {
+        "file": "sample_docs/api-rate-limits.md",
+        "line": 19,
+        "url": "invalid-spec-url.md",
+        "message": "Linked file 'invalid-spec-url.md' does not exist."
+      },
+      {
+        "file": "sample_docs/concept-retention-policies.md",
+        "line": 19,
+        "url": "#missing-retention-anchor",
+        "message": "Local anchor '#missing-retention-anchor' not found in document."
+      },
+      {
+        "file": "sample_docs/restore-single-file.md",
+        "line": 20,
+        "url": "disaster-guide-missing.md",
+        "message": "Linked file 'disaster-guide-missing.md' does not exist."
+      }
+    ]
+  },
+  "comparison": null
+}

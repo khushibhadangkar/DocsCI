@@ -1,0 +1,87 @@
+# DocsCI Configuration File
+version: 1
+
+rules:
+  # Style Rules
+  heading-hierarchy:
+    enabled: true
+    severity: error
+
+  single-h1:
+    enabled: true
+    severity: error
+
+  sentence-case-heading:
+    enabled: true
+    severity: warning
+
+  max-sentence-length:
+    enabled: true
+    severity: warning
+    max_words: 30
+
+  passive-voice:
+    enabled: true
+    severity: warning
+
+  banned-phrases:
+    enabled: true
+    severity: warning
+    phrases:
+      - simply
+      - just
+      - easy
+      - obviously
+      - clearly
+      - basically
+
+  imperative-steps:
+    enabled: true
+    severity: warning
+
+  # Terminology Rules
+  terminology-preferred:
+    enabled: true
+    severity: error
+    file: terminology.yml
+
+  # Metadata & Front Matter Rules
+  front-matter-required:
+    enabled: true
+    severity: error
+    required_fields:
+      - title
+      - description
+      - product_version
+      - last_reviewed
+      - owner
+
+  front-matter-date:
+    enabled: true
+    severity: error
+
+  stale-content:
+    enabled: true
+    severity: warning
+    stale_days: 180
+
+links:
+  timeout_seconds: 5
+  retries: 2
+  slow_threshold_seconds: 2.0
+  rate_limit_delay_seconds: 0.1
+  allowlist:
+    - "https://example.com"
+    - "https://api.example.com"
+    - "http://localhost"
+    - "http://127.0.0.1"
+
+release_notes:
+  prompt_path: "prompts/release_summary_v1.md"
+  output_draft: "RELEASE_NOTES_DRAFT.md"
+  categories:
+    breaking: "💥 Breaking Changes"
+    feat: "🚀 Added"
+    fix: "🐛 Fixed"
+    perf: "⚡ Performance Improvements"
+    docs: "📝 Documentation"

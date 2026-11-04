@@ -1,0 +1,41 @@
+# Terminology dictionary for DocsCI
+# Preferred terms and forbidden variants with explanations and suggested fixes
+
+terms:
+  - preferred: "backup job"
+    forbidden:
+      - "backup task"
+      - "backup routine"
+      - "backup script"
+    explanation: "Use 'backup job' to describe a configured backup operation or scheduled run."
+
+  - preferred: "immutable storage"
+    forbidden:
+      - "write-once disk"
+      - "worm storage"
+      - "locked bucket"
+    explanation: "Use 'immutable storage' when describing tamper-proof retention targets."
+
+  - preferred: "access token"
+    forbidden:
+      - "auth token"
+      - "security token"
+    explanation: "Use 'access token' when referring to bearer credentials for API access."
+
+  - preferred: "failover"
+    forbidden:
+      - "switchover"
+      - "fail-over"
+    explanation: "Use 'failover' as a single unhyphenated word for disaster recovery procedures."
+
+  - preferred: "repository"
+    forbidden:
+      - "storage pool"
+      - "data bucket"
+    explanation: "Use 'repository' for designated backup target locations."
+
+  - preferred: "snapshot"
+    forbidden:
+      - "point-in-time copy"
+      - "image copy"
+    explanation: "Use 'snapshot' for incremental block-level captures."

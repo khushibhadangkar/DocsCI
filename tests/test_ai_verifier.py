@@ -153,7 +153,7 @@ def test_load_prompt_template_missing_fallback() -> None:
 def test_mock_llm_client(sample_commits: list[CommitEntry]) -> None:
     mock_clean = MockLLMClient()
     out_clean = mock_clean.generate_summary(sample_commits, "{commits_list}")
-    assert "Notable Updates" in out_clean
+    assert "Notable updates" in out_clean
 
     mock_hallucinating = MockLLMClient(inject_hallucination=True)
     out_hallucinated = mock_hallucinating.generate_summary(sample_commits, "{commits_list}")

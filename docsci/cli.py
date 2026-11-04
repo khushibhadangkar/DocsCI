@@ -156,10 +156,24 @@ def release_notes(
     config: Path | None = typer.Option(None, "--config", "-c", help="Path to docsci.yml."),
 ) -> None:
     """Build conventional commit release notes from Git history with optional verified AI summary."""
-    typer.echo(
-        f"Generating release notes from {from_tag} to {to_tag} "
-        f"(ai_summary: {ai_summary}, allow_unsupported: {allow_unsupported})"
+    from docsci.config import load_config
+    from docsci.release_notes import extract_commits, generate_release_notes_markdown
+
+    cfg = load_config(config_path=config)
+    commits = extract_commits(repo_path=repo_path, from_tag=from_tag, to_tag=to_tag or "HEAD")
+
+    version_label = to_tag or "HEAD"
+    markdown_content = generate_release_notes_markdown(
+        commits=commits,
+        target_version=version_label,
+        config=cfg.release_notes,
     )
+
+    if output:
+        output.write_text(markdown_content, encoding="utf-8")
+        typer.secho(f"✔ Release notes written to {output}", fg=typer.colors.GREEN)
+    else:
+        typer.echo(markdown_content)
 
 
 @app.command()

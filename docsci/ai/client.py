@@ -150,12 +150,12 @@ class MockLLMClient:
 
         lines: list[str] = []
         if highlights:
-            lines.append("### Key Highlights")
+            lines.append("### Key highlights")
             for h in highlights:
                 lines.append(f"- {h}")
             lines.append("")
 
-        lines.append("### Notable Updates")
+        lines.append("### Notable updates")
         for u in updates:
             lines.append(f"- {u}")
 

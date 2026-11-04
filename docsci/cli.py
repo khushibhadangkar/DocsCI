@@ -239,7 +239,44 @@ def report(
     ),
 ) -> None:
     """Generate quality metrics report with before/after comparison."""
-    typer.echo(f"Generating report for {path}")
+    import json
+
+    from docsci.config import load_config
+    from docsci.reporting import compare_reports, format_markdown_report, generate_report_data
+
+    if not path.exists():
+        typer.secho(f"Error: Path '{path}' does not exist.", fg=typer.colors.RED, err=True)
+        raise typer.Exit(code=2)
+
+    cfg = load_config(config_path=config)
+    report_data = generate_report_data(target_path=path, config=cfg)
+
+    comparison_data: dict | None = None
+    if previous:
+        if not previous.is_file():
+            typer.secho(f"Error: Previous report file '{previous}' does not exist.", fg=typer.colors.RED, err=True)
+            raise typer.Exit(code=2)
+        try:
+            prev_json = json.loads(previous.read_text(encoding="utf-8"))
+            comparison_data = compare_reports(current=report_data, previous=prev_json)
+        except Exception as exc:
+            typer.secho(f"Error reading previous report: {exc}", fg=typer.colors.RED, err=True)
+            raise typer.Exit(code=2) from exc
+
+    md_report = format_markdown_report(report_data=report_data, comparison=comparison_data)
+
+    if output:
+        if output.suffix.lower() == ".json":
+            combined = {
+                "report": report_data,
+                "comparison": comparison_data,
+            }
+            output.write_text(json.dumps(combined, indent=2), encoding="utf-8")
+        else:
+            output.write_text(md_report, encoding="utf-8")
+        typer.secho(f"✔ Quality report written to {output}", fg=typer.colors.GREEN)
+    else:
+        typer.echo(md_report)
 
 
 if __name__ == "__main__":

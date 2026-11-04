@@ -10,11 +10,11 @@ from docsci.utils.markdown_parser import mask_fenced_code
 STEP_PATTERN = re.compile(r"^\s*\d+\.\s+([A-Za-z]+)")
 IMPERATIVE_VERBS = {
     "add", "apply", "assign", "attach", "browse", "check", "choose", "click", "clone",
-    "configure", "confirm", "connect", "copy", "create", "delete", "deploy", "disable",
-    "disconnect", "download", "enable", "ensure", "enter", "execute", "export", "find",
-    "follow", "generate", "import", "inspect", "install", "locate", "navigate", "note",
-    "open", "paste", "press", "reboot", "remove", "repeat", "restart", "restore", "review",
-    "run", "save", "select", "send", "set", "specify", "start", "stop", "switch", "test",
+    "compare", "configure", "confirm", "connect", "copy", "create", "delete", "deploy", "disable",
+    "disconnect", "download", "emit", "enable", "ensure", "enter", "execute", "export", "extract", "find",
+    "follow", "generate", "import", "inspect", "install", "locate", "mark", "navigate", "note",
+    "open", "parse", "paste", "press", "provide", "reboot", "remove", "repeat", "restart", "restore", "review",
+    "run", "save", "select", "send", "set", "specify", "split", "start", "stop", "switch", "test",
     "type", "update", "upload", "verify", "view", "wait",
 }
 

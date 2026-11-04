@@ -23,9 +23,9 @@ class SentenceCaseHeadingRule(BaseRule):
             words = list(re.findall(r"\b[A-Za-z]+\b", clean))
             if len(words) < 2:
                 continue
-            # Check non-first words: flag if capitalized words that are not all-caps acronyms exist in title-case pattern
+            # Check non-first words: flag if words that are standard title-case (Initial cap followed by lowercase) appear in pattern
             subsequent = [w for w in words[1:] if w.lower() not in LOWER_EXEMPT]
-            title_cased = [w for w in subsequent if w[0].isupper() and not w.isupper()]
+            title_cased = [w for w in subsequent if w[0].isupper() and w[1:].islower()]
             if len(title_cased) >= 2 or (len(subsequent) == 1 and len(title_cased) == 1):
                 suggested = words[0].capitalize() + " " + " ".join(w.lower() if not w.isupper() else w for w in words[1:])
                 violations.append(
